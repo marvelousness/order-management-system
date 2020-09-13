@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.marvelousness.springboot.oms.mapper.OrderPaymentMapper">
+
+	<resultMap type="org.marvelousness.springboot.oms.entity.pojo.OrderPayment" id="resultMap">
+		<id column="id" property="id" />
+		<result column="amount" property="amount" />
+		<result column="order_id" property="orderId" />
+		<result column="agent_id" property="agentId" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="payment_time" property="paymentTime" jdbcType="TIMESTAMP" />
+		<result column="payment_account" property="paymentAccount" />
+		<result column="payment_proof" property="paymentProof" />
+		<result column="payment_way" property="paymentWay" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<sql id="TABLE_COLUMN">`id`, `order_id`, `agent_id`, `amount`, `create_time`, `payment_account`, `payment_proof`, `payment_way`, `payment_time`</sql>
+	<sql id="TABLE_NAME">`oms_order_payment`</sql>
+
+	<!-- 根据订单ID获取付款信息 -->
+	<select id="selectByOrderId" resultMap="resultMap">
+		SELECT
+		<include refid="TABLE_COLUMN" />
+		FROM
+		<include refid="TABLE_NAME" />
+		<where>`order_id` = #{order_id}</where>
+	</select>
+
+	<!-- 插入多条数据 -->
+	<insert id="inserts" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO
+		<include refid="TABLE_NAME" />
+		(`order_id`, `agent_id`, `amount`, `create_time`, `payment_account`, `payment_proof`, `payment_way`, `payment_time`) VALUES
+		<foreach collection="payments" item="p" open="(" close=")" separator="),(">
+			#{p.orderId}, #{p.agentId}, #{p.amount}, NOW(), #{p.paymentAccount}, #{p.paymentProof}, #{p.paymentWay}, #{p.paymentTime}
+		</foreach>
+	</insert>
+
+</mapper>

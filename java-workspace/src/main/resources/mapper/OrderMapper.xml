@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.marvelousness.springboot.oms.mapper.OrderMapper">
+
+	<resultMap type="org.marvelousness.springboot.oms.entity.pojo.Order" id="resultMap">
+		<id column="id" property="id" />
+		<result column="number" property="number" />
+		<result column="amount" property="amount" />
+		<result column="remark" property="remark" />
+		<result column="creator_id" property="creatorId" />
+		<result column="customer_id" property="customerId" />
+		<result column="executor_id" property="executorId" />
+		<result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="TABLE_COLUMN">`id`, `number`, `customer_id`, `creator_id`, `executor_id`, `amount`, `deal_time`, `create_time`, `remark`</sql>
+	<sql id="TABLE_NAME">`oms_order`</sql>
+
+	<!-- 插入一条数据 -->
+	<insert id="insert" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO
+		<include refid="TABLE_NAME" />
+		(`number`, `customer_id`, `creator_id`, `executor_id`, `amount`, `deal_time`, `create_time`, `remark`)
+		VALUES (#{number}, #{customerId}, #{creatorId}, -1, #{amount}, #{dealTime}, NOW(), #{remark});
+	</insert>
+
+</mapper>

@@ -1,0 +1,105 @@
+debug: true
+logging:
+  level:
+    root: info
+server:
+  port: 7070
+  servlet:
+    session:
+      timeout: 10800
+spring:
+  application:
+    name: order-management-system
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  servlet:
+    multipart:
+      max-file-size: 2048MB
+      max-request-size: 2048MB
+  datasource: 
+    druid:
+      url: jdbc:mysql://127.0.0.1:13306/oms?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useTimezone=true&useSSL=false&serverTimezone=GMT%2B8
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      # driver-class-name: com.mysql.jdbc.Driver
+      initialSize: 50
+      minIdle: 10
+      maxActive: 50000
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 20000
+      minEvictableIdleTimeMillis: 30000
+      testOnBorrow: true
+      testOnReturn: true
+      testWhileIdle: true
+      keepAlive: true
+      validationQuery: SELECT 'x' FROM  DUAL
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      logAbandoned: true
+      filter:
+        encoding:
+          enabled: true 
+  redis:
+    database: 7
+    host: 127.0.0.1
+    port: 26379
+    password: 123456
+    timeout: 30000
+    prefix: OMS
+    jedis:
+      pool:
+        max-active: 100
+        max-idle: 10
+        max-wait: 30000
+        min-idle: 1
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML
+mybatis:
+  check-config-location: true
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+fs:
+  path: /fs/resources
+static-resource:
+  server: http://localhost:6060
+  title: 奇思妙想工作室 - 订单管理系统
+  version: 1.0.0
+  debug-mappings:
+  - href: /**
+    jses:
+    - /app.js
+  release-mappings:
+  - href: /**
+    jses:
+    - /statics/js/vendors.js
+    - /statics/js/app.js
+    - /statics/js/app-core.js
+    - /statics/js/app-customer.js
+    - /statics/js/app-order.js
+    csses:
+    - /statics/css/vendors.css
+    - /statics/css/app.css
+    - /statics/css/app-core.css
+    - /statics/css/app-customer.css
+    - /statics/css/app-order.css
+  anons:
+  - /__webpack_hmr
+  - /login
+  - /logout
+  - /session/logout
+  - /not-found
+  - /server-exception
+  - /forbidden
+  - /authentication/*
+  - /manifest.json
+  - /statics/**

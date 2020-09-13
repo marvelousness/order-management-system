@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<title>奇思妙想工作室 - 订单管理系统 - 1.0.0</title>
+		<meta charset="utf-8"/>
+		<meta name="theme-color" content="#f60"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="mobile-web-app-capable" content="yes"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui"/>
+		<link rel="shortcut icon" sizes="48x48" href="/statics/images/favicon.png"/>
+		<link rel="apple-touch-icon" sizes="120x120" href="/statics/images/favicon.png"/>
+
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+		<!-- cdn resource -->
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+	</head>
+
+	<body th:if="${supported}">
+		<div id="app">
+			<div class="loader-container" th:if="${debug}">
+				<div class="loader">
+					<div class="face">
+						<div class="circle"></div>
+					</div>
+					<div class="face">
+						<div class="circle"></div>
+					</div>
+					<h1>正在等待前端服务器启动</h1>
+				</div>
+				<div class="tips">您正在使用本地前端服务器，请使用 <strong>npm run dev</strong> 命令启动前端服务器后刷新该页面以进行前端的开发工作！
+					<a href="mailto:981247127@qq.com" title="联系开发者">981247127@qq.com</a>
+				</div>
+				<div class="copyright">奇思妙想工作室 - 订单管理系统</div>
+				<style type="text/css">body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background-color:black;color:#FFF}h1{text-align:center}.copyright{position:fixed;top:1em;left:1em;font-size:12px;font-weight:800}.tips{position:fixed;bottom:1em;right:1em;font-size:12px;font-weight:800}.tips>a{color:#FFF;font-weight:200;text-decoration:none}.loader{width:26em;height:26em;font-size:10px;position:relative;display:flex;align-items:center;justify-content:center}.loader .face{position:absolute;border-radius:50%;border-style:solid;animation:animate 3s linear infinite}.loader .face:nth-child(1){width:100%;height:100%;color:gold;border-color:currentColor transparent transparent currentColor;border-width:.2em .2em 0 0;--deg:-45deg;animation-direction:normal}.loader .face:nth-child(2){width:70%;height:70%;color:lime;border-color:currentColor currentColor transparent transparent;border-width:.2em 0 0 .2em;--deg:-135deg;animation-direction:reverse}.loader .face .circle{position:absolute;width:50%;height:.1em;top:50%;left:50%;background-color:transparent;transform:rotate(var(--deg));transform-origin:left}.loader .face .circle::before{position:absolute;top:-0.5em;right:-0.5em;content:'';width:1em;height:1em;background-color:currentColor;border-radius:50%;box-shadow:0 0 2em,0 0 4em,0 0 6em,0 0 8em,0 0 10em,0 0 0 .5em rgba(255,255,0,0.1)}@keyframes animate{to{transform:rotate(1turn)}}</style>			
+			</div>
+			<!-- 资源加载中... -->
+			<div style="text-align: center; margin-top: 2em;" th:if="!${debug}"><p>页面加载中，请稍后...</p><img src="/statics/images/mini-loading.gif" /></div>
+		</div>
+		<script type="text/javascript" th:inline="javascript">
+			window.UID = [[${uid}]];
+		</script>
+		<link th:each="css : ${csses}" th:href="${server} + ${css} + '?v=' + ${expire}" rel="stylesheet"/>
+		<script th:each="js : ${jses}" th:src="${server} + ${js} + '?v=' + ${expire}" type="text/javascript"></script>
+	</body>
+	
+	<body th:if="!${supported}">
+		<h1>兼容性提示</h1>
+		<p>系统目前对该浏览器暂不兼容, 建议您使用 <a href="https://www.google.cn/chrome/" target="_blank">Google Chrome</a> 浏览器</p>
+	</body>
+	
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.marvelousness.springboot.oms.mapper.UserMapper">
+
+	<resultMap type="org.marvelousness.springboot.oms.entity.pojo.User" id="resultMap">
+		<id column="id" property="id" />
+		<result column="userid" property="userid" />
+		<result column="mobile" property="mobile" />
+		<result column="email" property="email" />
+		<result column="name" property="name" />
+		<result column="gender" property="gender" />
+		<result column="hired_date" property="hiredDate" jdbcType="TIMESTAMP" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="is_disabled" property="disabled" jdbcType="TINYINT" />
+		<result column="avatar" property="avatar" />
+	</resultMap>
+
+	<sql id="TABLE_COLUMN">`id`, `userid`, `mobile`, `email`, `name`, `gender`, `hired_date`, `create_time`, `is_disabled`, `avatar`</sql>
+	<sql id="TABLE_NAME">`oms_sys_user`</sql>
+
+	<!-- 根据 userid 来查询信息 -->
+	<select id="selectByPrimaryKey" resultMap="resultMap">
+		SELECT
+		<include refid="TABLE_COLUMN" />
+		FROM
+		<include refid="TABLE_NAME" />
+		<where>`id` = #{id}</where>
+		LIMIT 1
+	</select>
+
+	<!-- 根据 userid 来查询信息 -->
+	<select id="selectByUserid" resultMap="resultMap">
+		SELECT
+		<include refid="TABLE_COLUMN" />
+		FROM
+		<include refid="TABLE_NAME" />
+		<where>
+			`userid` = #{userid} AND `is_deleted` = 0
+			<if test="password != null and password != ''"> AND `password` = MD5(#{password})</if>
+		</where>
+		LIMIT 1
+	</select>
+
+	<!-- 根据 手机号码 来查询信息 -->
+	<select id="selectByMobile" resultMap="resultMap">
+		SELECT
+		<include refid="TABLE_COLUMN" />
+		FROM
+		<include refid="TABLE_NAME" />
+		<where>
+			`mobile` = #{mobile} AND `is_deleted` = 0
+			<if test="password != null and password != ''"> AND `password` = MD5(#{password})</if>
+		</where>
+		LIMIT 1
+	</select>
+
+	<!-- 根据 电子邮箱 来查询信息 -->
+	<select id="selectByEmail" resultMap="resultMap">
+		SELECT
+		<include refid="TABLE_COLUMN" />
+		FROM
+		<include refid="TABLE_NAME" />
+		<where>
+			`email` = #{email} AND `is_deleted` = 0
+			<if test="password != null and password != ''"> AND `password` = MD5(#{password})</if>
+		</where>
+		LIMIT 1
+	</select>
+
+	<insert id="insert" parameterType="org.marvelousness.springboot.oms.entity.pojo.User" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO
+		<include refid="TABLE_NAME" />
+		(`userid`, `mobile`, `email`, `password`, `name`, `gender`, `hired_date`, `create_time`, `is_deleted`, `is_disabled`, `avatar`) VALUES
+		(#{userid}, #{mobile}, #{email}, #{password}, #{name}, #{gender}, #{hiredDate}, NOW(), '0', '0', #{avatar});
+	</insert>
+
+	<update id="update" parameterType="org.marvelousness.springboot.oms.entity.pojo.User">
+		UPDATE
+		<include refid="TABLE_NAME" />
+		<set>
+			<trim suffixOverrides=",">
+				<if test="mobile != null">`mobile`=#{mobile},</if>
+				<if test="email != null">`email`=#{email},</if>
+				<if test="name != null">`name`=#{name},</if>
+				<if test="gender != null">`gender`=#{gender},</if>
+				<if test="hiredDate != null">`hired_date`=#{hiredDate},</if>
+				<if test="avatar != null">`avatar`=#{avatar},</if>
+			</trim>
+		</set>
+		<where>(`id`=#{id})</where>
+	</update>
+</mapper>
