@@ -2,6 +2,7 @@ package org.marvelousness.springboot.oms.service;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.marvelousness.springboot.basic.exception.ServiceInvokeException;
@@ -86,6 +87,7 @@ public class OrderService {
 	public List<String> getOrderPayWays() {
 		List<String> ways = paymentMapper.selectOrderPayWays();
 		if (ways == null || ways.isEmpty()) {
+			// 在数据库中没有数据的时候，返回常用的支付方式的集合
 			ways = Arrays.asList("信用卡", "储蓄卡", "支付宝", "QQ支付", "微信支付", "苹果支付", "现金支付");
 		}
 		return ways;
@@ -104,6 +106,25 @@ public class OrderService {
 		List<OrderDto> dtos = dtoMapper.select(offset, limit);
 		Long total = dtoMapper.count();
 		return new ResponsePageEntity<OrderDto>(dtos, total, number, size);
+	}
+	
+	/**
+	 * 分配订单执行人
+	 * @param orderNumbers
+	 * @param executorId
+	 * @return
+	 */
+	public Integer distributeOrderExecutor(List<String> orderNumbers, Long executorId) {
+		if (orderNumbers == null || orderNumbers.isEmpty() || executorId == null || executorId < 1) {
+			return 0;
+		}
+		// 移除集合中所有为空和为 null 的元素
+		orderNumbers.removeAll(Collections.singleton(null));
+		orderNumbers.removeAll(Collections.singleton(""));
+		if (orderNumbers.isEmpty()) {
+			return 0;
+		}
+		return mapper.updateOrderExecutor(orderNumbers, executorId);
 	}
 
 }

@@ -2,7 +2,7 @@ import ARH from "./AsyncRequestHandler.js";
 /**
  * 客户系统-API服务
  */
-const API_SERVER = '';
+const API_SERVER = "/api";
 /**
  * 统一异步请求处理器
  * @param {String} _url 请求的地址
@@ -22,7 +22,7 @@ const handleRequest = ARH.ajax;
  */
 export const login = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/authentication/login`, 'POST', params, 'FormData');
+	return handleRequest(`${API_SERVER}/../authentication/login`, 'POST', params, 'FormData');
 };
 /**
  * 获取地区树
@@ -32,7 +32,7 @@ export const login = function(params) {
  */
 export const getAreaTree = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/area/tree`, 'GET', params, 'QueryString');
+	return handleRequest(`${API_SERVER}/area/tree`, 'GET', params, 'QueryString');
 };
 /**
  * 获取部门树
@@ -42,7 +42,7 @@ export const getAreaTree = function(params) {
  */
 export const getDepartmentTree = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/department/tree`, 'GET', params, 'QueryString');
+	return handleRequest(`${API_SERVER}/department/tree`, 'GET', params, 'QueryString');
 };
 /**
  * 保存用户信息
@@ -52,7 +52,7 @@ export const getDepartmentTree = function(params) {
  */
 export const getUserList = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/user/list`, 'Get', params, 'QueryString');
+	return handleRequest(`${API_SERVER}/user/list`, 'Get', params, 'QueryString');
 };
 /**
  * 保存用户信息
@@ -62,7 +62,7 @@ export const getUserList = function(params) {
  */
 export const postUserSave = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/user/save`, 'POST', params, 'RequestPayload');
+	return handleRequest(`${API_SERVER}/user/save`, 'POST', params, 'RequestPayload');
 };
 /**
  * 修改自己的登录密码
@@ -72,7 +72,7 @@ export const postUserSave = function(params) {
  */
 export const postUserPasswd = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/user/passwd`, 'POST', params, 'FormData');
+	return handleRequest(`${API_SERVER}/user/passwd`, 'POST', params, 'FormData');
 };
 /**
  * 修改账号的状态
@@ -82,7 +82,7 @@ export const postUserPasswd = function(params) {
  */
 export const postUserStatusDisable = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/user/status/disable`, 'POST', params, 'FormData');
+	return handleRequest(`${API_SERVER}/user/status/disable`, 'POST', params, 'FormData');
 };
 /**
  * 修改账号的状态
@@ -92,7 +92,7 @@ export const postUserStatusDisable = function(params) {
  */
 export const postUserStatusEnable = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/user/status/enable`, 'POST', params, 'FormData');
+	return handleRequest(`${API_SERVER}/user/status/enable`, 'POST', params, 'FormData');
 };
 /**
  * 删除用户
@@ -102,7 +102,7 @@ export const postUserStatusEnable = function(params) {
  */
 export const postUserDelete = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/user/delete`, 'POST', params, 'FormData');
+	return handleRequest(`${API_SERVER}/user/delete`, 'POST', params, 'FormData');
 };
 /**
  * 保存客户信息
@@ -112,7 +112,7 @@ export const postUserDelete = function(params) {
  */
 export const postCustomerSave = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/customer/save`, 'POST', params, 'RequestPayload');
+	return handleRequest(`${API_SERVER}/customer/save`, 'POST', params, 'RequestPayload');
 };
 /**
  * 查询客户列表
@@ -122,7 +122,7 @@ export const postCustomerSave = function(params) {
  */
 export const getCustomerList = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/customer/list`, 'Get', params, 'QueryString');
+	return handleRequest(`${API_SERVER}/customer/list`, 'Get', params, 'QueryString');
 };
 /**
  * 查询单条客户信息
@@ -132,7 +132,7 @@ export const getCustomerList = function(params) {
  */
 export const getCustomer = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/customer/get`, 'Get', params, 'QueryString');
+	return handleRequest(`${API_SERVER}/customer/get`, 'Get', params, 'QueryString');
 };
 /**
  * 删除客户信息
@@ -142,7 +142,7 @@ export const getCustomer = function(params) {
  */
 export const postCustomerDelete = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/customer/delete`, 'POST', params, 'FormData');
+	return handleRequest(`${API_SERVER}/customer/delete`, 'POST', params, 'FormData');
 };
 /**
  * 查询订单支付方式
@@ -150,9 +150,9 @@ export const postCustomerDelete = function(params) {
  * @author 981247127@qq.com
  * @time 2020-09-05 16:21
  */
-export const postOrderPaymentWay = function(params) {
+export const getOrderPaymentWay = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/order/payment/ways`, 'Get', params, 'QueryString');
+	return handleRequest(`${API_SERVER}/order/payment/ways`, 'Get', params, 'QueryString');
 };
 /**
  * 保存订单信息
@@ -162,7 +162,27 @@ export const postOrderPaymentWay = function(params) {
  */
 export const postOrderSave = function(params) {
 	params = params || {};
-	return handleRequest(`${API_SERVER}/api/order/save`, 'POST', params, 'RequestPayload');
+	return handleRequest(`${API_SERVER}/order/save`, 'POST', params, 'RequestPayload');
+};
+/**
+ * 查询订单列表
+ * 
+ * @author 981247127@qq.com
+ * @time 2020-09-05 16:21
+ */
+export const getOrderList = function(params) {
+	params = params || {};
+	return handleRequest(`${API_SERVER}/order/list`, 'Get', params, 'QueryString');
+};
+/**
+ * 查询订单列表
+ * 
+ * @author 981247127@qq.com
+ * @time 2020-09-05 16:21
+ */
+export const postOrderDistribute = function(params) {
+	params = params || {};
+	return handleRequest(`${API_SERVER}/order/distribute`, 'POST', params, 'FormData');
 };
 
 

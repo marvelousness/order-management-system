@@ -1,11 +1,14 @@
 <template>
     <div>
-        <ButtonGroup>
-            <Button type="primary" icon="md-add" @click="handleInsert">新增</Button>
-            <!-- <Button icon="md-cloud-download" @click="handleExport">导出</Button> -->
-        </ButtonGroup>
 
-        <Table border context-menu show-context-menu :columns="table.columns" :data="table.data" :loading="loading" @on-contextmenu="r => table.crow = r">
+        <div class="tool-bar">
+            <Button icon="md-cloud-download" @click="exporter.visible = true">导出</Button>
+            <div class="tool-searcher">
+                <Input search v-model="searcher.word" @on-search="load(1)" enter-button="搜索" placeholder="请输入客户的名称、昵称、微信、电话等信息进行检索" />
+            </div>
+        </div>
+
+        <Table border context-menu show-context-menu ref="table" :columns="table.columns" :data="table.data" :loading="loading" @on-contextmenu="r => table.crow = r">
             <template slot="footer">
                 <Page :total="pager.total" :page-size="pager.size" :current="pager.current" size="small" @on-change="handleTablePageChange" @on-page-size-change="handleTablePageSizeChange" show-total show-sizer/>
             </template>
@@ -15,6 +18,17 @@
                 <DropdownItem @click.native="handleContextMenuDelete" style="color: #ed4014">删除</DropdownItem>
             </template>
         </Table>
+
+        <Modal title="导出选项" v-model="exporter.visible" class-name="vertical-center-modal">
+            <RadioGroup v-model="exporter.option">
+                <Radio label="current">当前页的列表</Radio>
+                <Radio label="whole">完整的列表</Radio>
+            </RadioGroup>
+            <div class="modal-footer" slot="footer">
+                <Button type="primary" @click="handleExport">确认</Button>
+            </div>
+        </Modal>
+        
     </div>
 </template>
 
@@ -23,6 +37,9 @@
         data() {
             return {
                 loading: false,
+                searcher: {
+                    word: ""
+                },
                 table: {
                     columns: [{
                         width: 70,
@@ -40,22 +57,22 @@
                         key: "nick",
                         align: "center"
                     }, {
-                        width: 120,
+                        width: 140,
                         title: "旺旺",
                         key: "wangwang",
                         align: "center"
                     }, {
-                        width: 120,
+                        width: 140,
                         title: "QQ",
                         key: "qq",
                         align: "center"
                     }, {
-                        width: 120,
+                        width: 140,
                         title: "微信",
                         key: "wechat",
                         align: "center"
                     }, {
-                        width: 120,
+                        width: 140,
                         title: "电话",
                         key: "phone",
                         align: "center"
@@ -63,6 +80,11 @@
                         width: 80,
                         title: "地区",
                         key: "region",
+                        align: "center"
+                    }, {
+                        width: 170,
+                        title: "创建时间",
+                        key: "createTime",
                         align: "center"
                     }, {
                         width: 80,
@@ -75,7 +97,7 @@
                         key: "creatorDepartmentName",
                         align: "center"
                     }, {
-                        width: 120,
+                        width: 200,
                         title: "备注",
                         key: "remark"
                     }],
@@ -89,6 +111,10 @@
                     current: 1,
                     size: 10,
                     total: 0
+                },
+                exporter: {
+                    visible: false,
+                    option: "current"
                 }
             };
         },
@@ -97,14 +123,14 @@
         },
         methods: {
             load(number, size) {
-                if(this.loading) {
-                    return;
-                }
+                number = number > 0 ? number : this.pager.number;
+                size = size > 0 ? size : this.pager.size;
                 let that = this;
                 that.loading = true;
                 API.getCustomerList({
                     number: number,
-                    size: size
+                    size: size,
+                    word: this.searcher.word
                 }).then((response) => {
                     let resp = response && response.data ? response.data : {};
                     that.pager.size = resp.size;
@@ -113,11 +139,6 @@
                     that.table.data = resp.rows instanceof Array ? resp.rows : [];
                     that.loading = false;
                 }).catch(err => this.$error(err, this.loading = false));
-            },
-            handleInsert() {
-                this.$router.push({
-                    name: "CustomerEditor"
-                });
             },
             hanleTableRowEdit(row) {
                 this.$router.push({
@@ -193,9 +214,28 @@
                 }});
             },
             handleExport() {
+                if(this.exporter.option == "current") {
+                    this.$refs.table.exportCsv({
+                        filename: new Date().format("客户列表-yyyyMMddHHmmss-") + this.pager.current
+                    });
+                    this.exporter.visible = false;
+                    return;
+                }
+                this.$Message.info("客户数据导出功能暂未开放!");
             }
         }
     }
 </script>
 
-<style scoped></style>
+<style scoped>
+    .tool-searcher {
+        display: inline-block;
+        width: 35em;
+        vertical-align: middle;
+    }
+    .tool-bar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2px;
+    }
+</style>

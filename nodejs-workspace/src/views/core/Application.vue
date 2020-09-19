@@ -38,7 +38,9 @@
                     </template>
                     <template v-else>
                         <Breadcrumb style="margin-bottom: 10px" >
-                            <BreadcrumbItem v-for="(m, i) in $route.matched" :key="i" v-if="i > 0">{{m.meta.label}}</BreadcrumbItem>
+                            <template v-for="(m, i) in $route.matched">
+                                <BreadcrumbItem :key="i" v-if="i > 0">{{m.meta.label}}</BreadcrumbItem>
+                            </template>
                         </Breadcrumb>
                         <Card>
                             <router-view></router-view>

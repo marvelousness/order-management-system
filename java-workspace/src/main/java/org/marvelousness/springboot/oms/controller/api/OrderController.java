@@ -1,5 +1,6 @@
 package org.marvelousness.springboot.oms.controller.api;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.marvelousness.springboot.basic.annotation.SessionId;
@@ -52,6 +53,20 @@ public class OrderController {
 		return service.saveNewOrder(order);
 	}
 
+	/**
+	 * 分配订单
+	 * @param numbers 订单编号
+	 * @param executor 执行人ID
+	 * @return
+	 */
+	@PostMapping("distribute")
+	public Integer distribute(String[] numbers, Long executor) {
+		if (numbers == null || executor == null) {
+			return 0;
+		}
+		return service.distributeOrderExecutor(Arrays.asList(numbers), executor);
+	}
+	
 	/**
 	 * 获取所有的订单支付方式
 	 * 

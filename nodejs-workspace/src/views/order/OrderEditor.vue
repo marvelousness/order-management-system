@@ -327,7 +327,7 @@
 		},
         mounted() {
             if(!this.cid) {
-                this.$Message.warning("请选择需要船创建订单的客户对象！");
+                this.$Message.warning("请选择需要创建订单的客户对象！");
                 this.$router.push({
                     name: "CustomerList"
                 });
@@ -342,7 +342,7 @@
 
                 let that = this;
                 let ps = [new Promise(function(resolve) {
-                    API.postOrderPaymentWay().then((response) => {
+                    API.getOrderPaymentWay().then((response) => {
                         let ways = response && response.data instanceof Array ? response.data : [];
                         let i = 0;
                         while (i < ways.length) {

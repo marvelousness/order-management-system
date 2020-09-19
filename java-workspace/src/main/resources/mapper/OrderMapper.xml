@@ -25,4 +25,14 @@
 		VALUES (#{number}, #{customerId}, #{creatorId}, -1, #{amount}, #{dealTime}, NOW(), #{remark});
 	</insert>
 
+	<!-- 更新订单执行人 -->
+	<update id="updateOrderExecutor">
+		UPDATE
+		<include refid="TABLE_NAME" />
+		<set>`executor_id`=#{executor}</set>
+		<where>
+			<foreach collection="numbers" item="n" open="`number` IN (" close=")" separator=",">#{n}</foreach>
+		</where>
+	</update>
+	
 </mapper>

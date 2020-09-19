@@ -1,5 +1,8 @@
 package org.marvelousness.springboot.oms.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.marvelousness.springboot.oms.entity.pojo.Order;
 
@@ -44,4 +47,12 @@ public interface OrderMapper {
 	 * @return
 	 */
 	public Long insert(Order order);
+	
+	/**
+	 * 更新订单执行人
+	 * @param numbers 订单编号
+	 * @param executor 订单执行人
+	 * @return
+	 */
+	public Integer updateOrderExecutor(@Param("numbers") List<String> numbers, @Param("executor") Long executor);
 }

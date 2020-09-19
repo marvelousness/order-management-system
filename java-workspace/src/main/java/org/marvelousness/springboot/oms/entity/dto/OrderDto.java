@@ -1,7 +1,11 @@
 package org.marvelousness.springboot.oms.entity.dto;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.marvelousness.springboot.oms.entity.pojo.Customer;
 import org.marvelousness.springboot.oms.entity.pojo.Order;
+import org.marvelousness.springboot.oms.entity.pojo.OrderPayment;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -66,6 +70,33 @@ public class OrderDto extends Order {
 	 */
 	private String customerPhone;
 
+	/**
+	 * 已付总额
+	 * @return
+	 */
+	public BigDecimal getPaidAmount() {
+		// 统计所有的付款信息的总额
+		BigDecimal amount = BigDecimal.ZERO;
+		List<OrderPayment> payments = super.getPayments();
+		if (payments != null) {
+			for (OrderPayment payment : payments) {
+				if (payment != null && payment.getAmount() != null) {
+					amount = amount.add(payment.getAmount());
+				}
+			}
+		}
+		return amount;
+	}
+	
+	/**
+	 * 表示当前订单是否已经付清
+	 * @return
+	 */
+	public boolean isPayOff() {
+		// 0 <= PaidAmount - amount;
+		return BigDecimal.ZERO.compareTo(getPaidAmount().subtract(getAmount())) < 1;
+	}
+	
 	/**
 	 * 设置创建人信息
 	 * 
