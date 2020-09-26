@@ -139,7 +139,7 @@
                 API.getOrderList({
                     number: number,
                     size: size,
-                    word: this.searcher.word
+                    keyword: this.searcher.word
                 }).then((response) => {
                     let resp = response && response.data ? response.data : {};
                     that.pager.size = resp.size;

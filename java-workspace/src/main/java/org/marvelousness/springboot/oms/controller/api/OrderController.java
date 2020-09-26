@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
+ * 订单控制器
+ * 
  * @author 981247127@qq.com
  * @time 2020-09-12 08:49
  */
@@ -28,15 +29,17 @@ public class OrderController {
 	private OrderService service;
 
 	/**
-	 * 查询客户列表
+	 * 查询订单列表
 	 * 
-	 * @param number 页码数
-	 * @param size   页项数
+	 * @param keyword 模糊过滤条件 - 客户信息关键词
+	 * @param number  页码数
+	 * @param size    页项数
 	 * @return
 	 */
 	@GetMapping("list")
-	public ResponsePageEntity<OrderDto> list(Integer number, Integer size) {
-		return service.list(number, size);
+	public ResponsePageEntity<OrderDto> list(String keyword, Integer number, Integer size, @SessionId Long id) {
+		// 检索订单创建人或者所属人是我的订单信息
+		return service.list(id, id, keyword, number, size);
 	}
 
 	/**
@@ -55,7 +58,8 @@ public class OrderController {
 
 	/**
 	 * 分配订单
-	 * @param numbers 订单编号
+	 * 
+	 * @param numbers  订单编号
 	 * @param executor 执行人ID
 	 * @return
 	 */
@@ -66,7 +70,7 @@ public class OrderController {
 		}
 		return service.distributeOrderExecutor(Arrays.asList(numbers), executor);
 	}
-	
+
 	/**
 	 * 获取所有的订单支付方式
 	 * 

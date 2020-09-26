@@ -5,7 +5,7 @@ import redirect from "utils/redirect.js";
  */
 const IGNORANCES = [
 	"/session/logout",
-	"/login"
+	// "/login"
 ];
 /**
  * 被排除的异常，属于这些类抛出的异常不被认为是异常，而是后端发送的消息

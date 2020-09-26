@@ -10,7 +10,22 @@
 		`oms_customer`
 	</sql>
 	<sql id="where">
-		<where>`is_deleted` = 0</where>
+		<where>
+			`is_deleted` = 0
+			<if test="creator != null"> AND creator_id = #{creator}</if>
+			<if test="keyword != null and keyword != ''">
+				AND (
+				`name` LIKE CONCAT('%', #{keyword}, '%')
+				OR `nick` LIKE CONCAT('%', #{keyword}, '%')
+				OR `wangwang` LIKE CONCAT('%', #{keyword}, '%')
+				OR `qq` LIKE CONCAT('%', #{keyword}, '%')
+				OR `wechat` LIKE CONCAT('%', #{keyword}, '%')
+				OR `phone` LIKE CONCAT('%', #{keyword}, '%')
+				OR `region` LIKE CONCAT('%', #{keyword}, '%')
+				OR `remark` LIKE CONCAT('%', #{keyword}, '%')
+				)
+			</if>
+		</where>
 	</sql>
 	<sql id="columns">
 		`id`, `create_time`, `creator_id`, `is_deleted`, `name`, `nick`, `wangwang`, `qq`, `wechat`, `phone`, `region`, `remark`

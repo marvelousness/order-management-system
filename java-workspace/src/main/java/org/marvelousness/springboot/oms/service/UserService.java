@@ -19,7 +19,6 @@ import org.marvelousness.springboot.oms.mapper.UserOrderRelationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 /**
  * 用户信息业务层
@@ -74,7 +73,10 @@ public class UserService {
 
 		// 断言用户信息存在
 
-		Assert.isTrue(exists, "用户不存在");
+		// Assert.isTrue(exists, "用户不存在");
+		if (!exists) {
+			throw new ServiceInvokeException("用户不存在");
+		}
 
 		// 3. 验证传递的登录凭据
 		User user = null;
@@ -88,7 +90,10 @@ public class UserService {
 
 		// 断言用户信息存在
 
-		Assert.isTrue(user != null, "登录密码错误");
+		// Assert.isTrue(user != null, "登录密码错误");
+		if (user == null || user.getId() == null) {
+			throw new ServiceInvokeException("登录密码错误");
+		}
 
 		if (!user.isEnabled()) {
 			throw new ServiceInvokeException("用户【" + authenticator + "】已经停用，不允许登录");
@@ -154,7 +159,9 @@ public class UserService {
 
 			// 2. 初始化部分字段的默认值
 			// 新增用户的初始密码的均为 888888
-			user.setPassword(DigestUtils.md5Hex("888888"));
+			// 密码的处理是使用 MD5 加密两次，在新建账号的时候，由这里加密两次。
+			// 其他地方，例如登录，修改密码等，全部都是前后端各加密一次
+			user.setPassword(DigestUtils.md5Hex(DigestUtils.md5Hex("888888")));
 			// 设置默认的头像
 			if (user.getAvatar() == null) {
 				user.setAvatar("default");

@@ -96,20 +96,24 @@ public class OrderService {
 	/**
 	 * 分页查询客户列表数据
 	 * 
-	 * @param number
-	 * @param size
+	 * @param creator  精准过滤条件 - 创建人的ID
+	 * @param executor 精准过滤条件 - 执行人的ID
+	 * @param keyword  模糊过滤条件 - 客户信息关键词
+	 * @param number   页码数量
+	 * @param size     页项数
 	 * @return
 	 */
-	public ResponsePageEntity<OrderDto> list(Integer number, Integer size) {
+	public ResponsePageEntity<OrderDto> list(Long creator, Long executor, String keyword, Integer number, Integer size) {
 		int limit = size != null && size > 0 ? size : 10;
 		int offset = number != null && number > 0 ? (number - 1) * limit : 0;
-		List<OrderDto> dtos = dtoMapper.select(offset, limit);
-		Long total = dtoMapper.count();
+		List<OrderDto> dtos = dtoMapper.select(creator, executor, keyword, offset, limit);
+		Long total = dtoMapper.count(creator, executor, keyword);
 		return new ResponsePageEntity<OrderDto>(dtos, total, number, size);
 	}
-	
+
 	/**
 	 * 分配订单执行人
+	 * 
 	 * @param orderNumbers
 	 * @param executorId
 	 * @return

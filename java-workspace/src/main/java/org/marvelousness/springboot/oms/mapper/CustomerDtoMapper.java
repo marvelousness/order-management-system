@@ -22,16 +22,20 @@ public interface CustomerDtoMapper {
 	/**
 	 * 查询列表
 	 * 
-	 * @param offset 便宜量
-	 * @param limit  限制量
+	 * @param creator 创建人
+	 * @param keyword 关键词
+	 * @param offset  偏移量
+	 * @param limit   限制量
 	 * @return
 	 */
-	public List<CustomerDto> select(@Param("offset") Integer offset, @Param("limit") Integer limit);
+	public List<CustomerDto> select(@Param("creator") Long creator, @Param("keyword") String keyword, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
 	/**
 	 * 查询总数
 	 * 
+	 * @param creator 创建人
+	 * @param keyword 关键词
 	 * @return
 	 */
-	public Long count();
+	public Long count(@Param("creator") Long creator, @Param("keyword") String keyword);
 }

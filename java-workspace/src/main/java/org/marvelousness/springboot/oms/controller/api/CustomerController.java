@@ -28,13 +28,15 @@ public class CustomerController {
 	/**
 	 * 查询客户列表
 	 * 
-	 * @param number 页码数
-	 * @param size   页项数
+	 * @param keyword 模糊过滤条件 - 客户信息关键词
+	 * @param number  页码数
+	 * @param size    页项数
 	 * @return
 	 */
 	@GetMapping("list")
-	public ResponsePageEntity<CustomerDto> list(Integer number, Integer size) {
-		return service.list(number, size);
+	public ResponsePageEntity<CustomerDto> list(String keyword, Integer number, Integer size, @SessionId Long id) {
+		// 检索订单创建人是我的客户信息
+		return service.list(id, keyword, number, size);
 	}
 
 	/**

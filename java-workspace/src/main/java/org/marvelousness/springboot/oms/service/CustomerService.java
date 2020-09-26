@@ -52,15 +52,17 @@ public class CustomerService {
 	/**
 	 * 分页查询客户列表数据
 	 * 
-	 * @param number
-	 * @param size
+	 * @param creator 精准过滤条件 - 创建人的ID
+	 * @param keyword 模糊过滤条件 - 客户信息关键词
+	 * @param number  页码数量
+	 * @param size    页项数
 	 * @return
 	 */
-	public ResponsePageEntity<CustomerDto> list(Integer number, Integer size) {
+	public ResponsePageEntity<CustomerDto> list(Long creator, String keyword, Integer number, Integer size) {
 		int limit = size != null && size > 0 ? size : 10;
 		int offset = number != null && number > 0 ? (number - 1) * limit : 0;
-		List<CustomerDto> dtos = dtoMapper.select(offset, limit);
-		Long total = dtoMapper.count();
+		List<CustomerDto> dtos = dtoMapper.select(creator, keyword, offset, limit);
+		Long total = dtoMapper.count(creator, keyword);
 		return new ResponsePageEntity<CustomerDto>(dtos, total, number, size);
 	}
 

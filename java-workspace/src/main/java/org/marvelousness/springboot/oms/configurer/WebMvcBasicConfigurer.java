@@ -6,6 +6,8 @@ import org.marvelousness.springboot.basic.resolver.SessionUserMethodArgumentReso
 import org.marvelousness.springboot.oms.resolver.FrontEndViewResolver;
 import org.marvelousness.springboot.oms.service.FileSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
@@ -46,5 +48,13 @@ public class WebMvcBasicConfigurer implements WebMvcConfigurer {
 	@Bean
 	public FrontEndViewResolver globalErrorViewResolver() {
 		return new FrontEndViewResolver();
+	}
+
+	@Bean
+	public TomcatServletWebServerFactory tomcatServletWebServerFactory (){
+	   // 修改内置的 tomcat 容器配置, 使得接收来自前端发送的参数中包含[]或者{}等特殊字符，避免出现 400
+	   TomcatServletWebServerFactory tomcatServlet = new TomcatServletWebServerFactory();
+	   tomcatServlet.addConnectorCustomizers((TomcatConnectorCustomizer) connector -> connector.setProperty("relaxedQueryChars", "[]{}"));
+	   return tomcatServlet ;
 	}
 }
