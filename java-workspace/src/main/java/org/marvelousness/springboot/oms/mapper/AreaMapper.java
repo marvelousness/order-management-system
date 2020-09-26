@@ -25,4 +25,11 @@ public interface AreaMapper {
 	@Results(id = "Area", value = { @Result(column = "id", property = "id"), @Result(column = "name", property = "name"), @Result(column = "id", property = "areas", many = @Many(select = "org.marvelousness.springboot.oms.mapper.AreaMapper.getAreas")) })
 	@Select("SELECT `id`, `name` FROM " + TABLE_NAME + " WHERE `pid` = #{pid}")
 	public List<Area> getAreas(Integer pid);
+	
+	/**
+	 * 查询所有的二级城市
+	 * @return
+	 */
+	@Select("SELECT `name` FROM " + TABLE_NAME + " WHERE `pid` <> '0'")
+	public List<String> selectSecondAreaNames();
 }

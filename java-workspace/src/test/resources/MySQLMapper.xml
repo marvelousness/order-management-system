@@ -1,0 +1,43 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.marvelousness.springboot.oms.test.mapper.MySQLMapper">
+
+	<!-- 批量插入客户信息 -->
+	<insert id="insertCustomer" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO `oms_customer`
+		(`create_time`, `creator_id`, `is_deleted`, `name`, `nick`, `wangwang`, `qq`, `wechat`, `phone`, `region`, `remark`) VALUES
+		(#{createTime}, #{creatorId}, 0, #{name}, #{nick}, #{wangwang}, #{qq}, #{wechat}, #{phone}, #{region}, #{remark})
+	</insert>
+	
+	<!-- 批量插入订单信息 -->
+	<!-- 
+	<insert id="insertOrders" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO `oms_order`
+		(`number`, `customer_id`, `creator_id`, `executor_id`, `amount`, `deal_time`, `create_time`, `remark) VALUES
+		<foreach collection="orders" item="item" open="(" close=")" separator="),(">
+			#{item.number,jdbcType=VARCHAR},
+			#{item.customerId,jdbcType=BIGINT},
+			#{item.creatorId,jdbcType=BIGINT},
+			#{item.executorId,jdbcType=BIGINT},
+			#{item.amount,jdbcType=DECIMAL},
+			#{item.dealTime,jdbcType=TIMESTAMP},
+			#{item.createTime,jdbcType=TIMESTAMP},
+			#{item.remark,jdbcType=VARCHAR}
+		</foreach>
+	</insert>
+	 -->
+	<insert id="insertOrder" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO `oms_order`
+		(`number`, `customer_id`, `creator_id`, `executor_id`, `amount`, `deal_time`, `create_time`, `remark`) VALUES
+		(#{number}, #{customerId} ,#{creatorId}, #{executorId}, #{amount}, #{dealTime}, #{createTime}, #{remark})
+	</insert>
+	
+	<!-- 插入多条数据 -->
+	<insert id="insertOrderPayments" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO `oms_order_payment`
+		(`order_id`, `agent_id`, `amount`, `create_time`, `payment_account`, `payment_proof`, `payment_way`, `payment_time`) VALUES
+		<foreach collection="payments" item="p" open="(" close=")" separator="),(">
+			#{p.orderId}, #{p.agentId}, #{p.amount}, #{p.createTime}, #{p.paymentAccount}, #{p.paymentProof}, #{p.paymentWay}, #{p.paymentTime}
+		</foreach>
+	</insert>
+	
+</mapper>
