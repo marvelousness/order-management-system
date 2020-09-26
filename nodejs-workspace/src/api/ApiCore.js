@@ -194,6 +194,16 @@ export const postOrderDistribute = function(params) {
 	params = params || {};
 	return handleRequest(`${API_SERVER}/order/distribute`, 'POST', params, 'FormData');
 };
+/**
+ * 查询统计信息
+ * 
+ * @author 981247127@qq.com
+ * @time 2020-09-05 16:21
+ */
+export const getstatistics = function(params) {
+	params = params || {};
+	return handleRequest(`${API_SERVER}/statistics`, 'Get', params, 'QueryString');
+};
 
 
 // TODO=::=JavaScript Function Generator=::=END 
