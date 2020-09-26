@@ -16,11 +16,18 @@
 	<sql id="where">
 		<where>
 			c.`is_deleted` = 0
-			<if test="creator != null"> AND o.`creator_id` = #{creator}</if>
-			<if test="executor != null"> AND o.`executor_id` = #{executor}</if>
+			<if test="creator != null or executor != null">
+				AND (
+				<trim prefixOverrides="OR">
+					<if test="creator != null">OR o.`creator_id` = #{creator}</if>
+					<if test="executor != null">OR o.`executor_id` = #{executor}</if>
+				</trim>
+				)
+			</if>
 			<if test="keyword != null and keyword != ''">
 				AND (
-				c.`name` LIKE CONCAT('%', #{keyword}, '%')
+				o.`number` = #{keyword}
+				OR c.`name` LIKE CONCAT('%', #{keyword}, '%')
 				OR c.`nick` LIKE CONCAT('%', #{keyword}, '%')
 				OR c.`wangwang` LIKE CONCAT('%', #{keyword}, '%')
 				OR c.`qq` LIKE CONCAT('%', #{keyword}, '%')
@@ -59,7 +66,7 @@
 	</select>
 
 	<!-- 查询总数 -->
-	<select id="count" resultType="java.lang.Long">
+	<select id="count" resultType="java.lang.Integer">
 		SELECT COUNT(1) FROM
 		<include refid="table" />
 		<include refid="where" />

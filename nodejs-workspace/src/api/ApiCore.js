@@ -55,6 +55,16 @@ export const getUserList = function(params) {
 	return handleRequest(`${API_SERVER}/user/list`, 'Get', params, 'QueryString');
 };
 /**
+ * 为前端的 AutoComplete 提供数据支持
+ * 
+ * @author 981247127@qq.com
+ * @time 2020-08-19 16:21
+ */
+export const getUserAutoCompleteOptions = function(params) {
+	params = params || {};
+	return handleRequest(`${API_SERVER}/user/auto-complete`, 'Get', params, 'QueryString');
+};
+/**
  * 保存用户信息
  * 
  * @author 981247127@qq.com

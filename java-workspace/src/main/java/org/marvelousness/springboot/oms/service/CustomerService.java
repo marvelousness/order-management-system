@@ -62,7 +62,7 @@ public class CustomerService {
 		int limit = size != null && size > 0 ? size : 10;
 		int offset = number != null && number > 0 ? (number - 1) * limit : 0;
 		List<CustomerDto> dtos = dtoMapper.select(creator, keyword, offset, limit);
-		Long total = dtoMapper.count(creator, keyword);
+		Integer total = dtoMapper.count(creator, keyword);
 		return new ResponsePageEntity<CustomerDto>(dtos, total, number, size);
 	}
 

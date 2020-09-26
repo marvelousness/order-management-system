@@ -1,7 +1,10 @@
 package org.marvelousness.springboot.oms.controller.api;
 
+import java.util.List;
+
 import org.marvelousness.springboot.basic.annotation.SessionId;
 import org.marvelousness.springboot.oms.entity.ResponsePageEntity;
+import org.marvelousness.springboot.oms.entity.dto.AutoCompleteDto;
 import org.marvelousness.springboot.oms.entity.dto.UserDto;
 import org.marvelousness.springboot.oms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 	@Autowired
 	private UserService service;
+
+	/**
+	 * 为前端的 AutoComplete 提供数据支持
+	 * 
+	 * @return
+	 */
+	@GetMapping("auto-complete")
+	public List<AutoCompleteDto> list() {
+		return service.getAutoCompleteOptions();
+	}
 
 	/**
 	 * 查询用户列表

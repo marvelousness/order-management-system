@@ -31,5 +31,5 @@ public interface UserDtoMapper {
 	 * 
 	 * @return
 	 */
-	public Long count();
+	public Integer count();
 }

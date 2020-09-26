@@ -39,5 +39,5 @@ public interface OrderDtoMapper {
 	 * @param keyword  关键词
 	 * @return
 	 */
-	public Long count(@Param("creator") Long creator, @Param("executor") Long executor, @Param("keyword") String keyword);
+	public Integer count(@Param("creator") Long creator, @Param("executor") Long executor, @Param("keyword") String keyword);
 }

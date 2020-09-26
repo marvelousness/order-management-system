@@ -37,5 +37,5 @@ public interface CustomerDtoMapper {
 	 * @param keyword 关键词
 	 * @return
 	 */
-	public Long count(@Param("creator") Long creator, @Param("keyword") String keyword);
+	public Integer count(@Param("creator") Long creator, @Param("keyword") String keyword);
 }

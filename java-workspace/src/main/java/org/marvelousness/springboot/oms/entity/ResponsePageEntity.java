@@ -31,7 +31,7 @@ public class ResponsePageEntity<T> implements Iterable<T>, Serializable {
 	/**
 	 * 总记录数
 	 */
-	private Long total = 0L;
+	private Integer total = 0;
 
 	/**
 	 * 用于响应分页输出的对象
@@ -41,7 +41,7 @@ public class ResponsePageEntity<T> implements Iterable<T>, Serializable {
 	 * @param list   页数据
 	 * @param total  记录总数
 	 */
-	public ResponsePageEntity(List<T> list, Long total, Integer number, Integer size) {
+	public ResponsePageEntity(List<T> list, Integer total, Integer number, Integer size) {
 		this.number = number == null ? 1 : number;
 		this.size = size == null ? 1 : size;
 		this.rows = list == null ? new CopyOnWriteArrayList<T>() : list;

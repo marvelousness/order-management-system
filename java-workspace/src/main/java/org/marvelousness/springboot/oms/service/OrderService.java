@@ -107,7 +107,7 @@ public class OrderService {
 		int limit = size != null && size > 0 ? size : 10;
 		int offset = number != null && number > 0 ? (number - 1) * limit : 0;
 		List<OrderDto> dtos = dtoMapper.select(creator, executor, keyword, offset, limit);
-		Long total = dtoMapper.count(creator, executor, keyword);
+		Integer total = dtoMapper.count(creator, executor, keyword);
 		return new ResponsePageEntity<OrderDto>(dtos, total, number, size);
 	}
 

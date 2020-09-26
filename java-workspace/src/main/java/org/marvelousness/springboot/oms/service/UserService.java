@@ -1,5 +1,6 @@
 package org.marvelousness.springboot.oms.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.marvelousness.springboot.basic.exception.ServiceInvokeException;
 import org.marvelousness.springboot.basic.session.SessionManager;
 import org.marvelousness.springboot.basic.utils.StringUtils;
 import org.marvelousness.springboot.oms.entity.ResponsePageEntity;
+import org.marvelousness.springboot.oms.entity.dto.AutoCompleteDto;
 import org.marvelousness.springboot.oms.entity.dto.UserDto;
 import org.marvelousness.springboot.oms.entity.pojo.User;
 import org.marvelousness.springboot.oms.mapper.UserCustomerRelationMapper;
@@ -114,8 +116,62 @@ public class UserService {
 		int limit = size != null && size > 0 ? size : 10;
 		int offset = number != null && number > 0 ? (number - 1) * limit : 0;
 		List<UserDto> dtos = dtoMapper.select(offset, limit);
-		Long total = dtoMapper.count();
+		Integer total = dtoMapper.count();
 		return new ResponsePageEntity<UserDto>(dtos, total, number, size);
+	}
+
+	/**
+	 * 为前端的 AutoComplete 提供数据支持
+	 * 
+	 * @return
+	 */
+	public List<AutoCompleteDto> getAutoCompleteOptions() {
+		List<AutoCompleteDto> dtos = new ArrayList<AutoCompleteDto>();
+		Integer count = dtoMapper.count();
+		if (count == null || count < 1) {
+			return dtos;
+		}
+		List<UserDto> users = dtoMapper.select(0, count);
+		if (users != null) {
+			for (UserDto user : users) {
+				if (user != null && user.getId() != null && user.getDepartmentId() != null) {
+					String value = user.getDepartmentId().toString();
+					String title = user.getDepartmentName();
+					if (value == null) {
+						continue;
+					}
+
+					AutoCompleteDto dto = null;
+					for (AutoCompleteDto _dto : dtos) {
+						if (_dto != null && value.equals(_dto.getValue())) {
+							dto = _dto;
+							break;
+						}
+					}
+					if (dto == null) {
+						dto = new AutoCompleteDto();
+						dto.setValue(value);
+						dto.setTitle(title);
+					}
+					List<AutoCompleteDto> children = dto.getChildren();
+					if (children == null) {
+						children = new ArrayList<AutoCompleteDto>();
+					}
+
+					{
+						AutoCompleteDto _dto = new AutoCompleteDto();
+						_dto.setValue(user.getId().toString());
+						_dto.setTitle(user.getName());
+						children.add(_dto);
+					}
+
+					dto.setChildren(children);
+					
+					dtos.add(dto);
+				}
+			}
+		}
+		return dtos;
 	}
 
 	/**
