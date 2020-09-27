@@ -33,8 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 前端视图解析器，因为前端的 Vue-Router 采用的是 History 模式，故而，当页面刷新的时候会出现404的情况，这里统一将所有的异常视图定位给前端，交给VUE来处理
  * 
- * @author xiaolinzi
- * @mail 981247127@qq.com
+ * @author 981247127@qq.com
  * @time 2019-10-17 18:25
  */
 @Slf4j
@@ -44,7 +43,7 @@ public class FrontEndViewResolver implements ErrorViewResolver {
 	 */
 	private static final String LOGIN_PATTERN = "/login";
 	/**
-	 * 表示node服务器的地址，用于开发环境下联调
+	 * 静态资源的属性
 	 */
 	@Autowired
 	private StaticResourceProperties properties;
@@ -249,10 +248,6 @@ public class FrontEndViewResolver implements ErrorViewResolver {
 	/**
 	 * 获取当前请求的时间
 	 * 
-	 * @author xiaolinzi
-	 * @mail 981247127@qq.com
-	 * @time 2019-10-17 19:06
-	 * @param model
 	 * @return
 	 */
 	@SuppressWarnings("unused")
@@ -275,10 +270,6 @@ public class FrontEndViewResolver implements ErrorViewResolver {
 	/**
 	 * 获取当前请求的路径
 	 * 
-	 * @author xiaolinzi
-	 * @mail 981247127@qq.com
-	 * @time 2019-10-17 19:06
-	 * @param model
 	 * @return
 	 */
 	private String getCurrentPath(Map<String, Object> model) {
